@@ -1,5 +1,8 @@
 class Misc:
+	# Amino Acids, matrices and lists all use this ordering
 	aas = ['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V']
+	
+	# Bosum Substitution Matrix
 	blosum = [
 		[9867, 2, 9, 10, 3, 8, 17, 21, 2, 6, 4, 2, 6, 2, 22, 35, 32, 0, 2, 18],
 		[1, 9913, 1, 0, 1, 10, 0, 0, 10, 3, 1, 19, 4, 1, 4, 6, 1, 8, 0, 1],
@@ -22,7 +25,10 @@ class Misc:
 		[1, 0, 3, 0, 3, 0, 1, 0, 4, 1, 1, 0, 0, 21, 0, 1, 1, 2, 9945, 1],
 		[13, 2, 1, 1, 3, 2, 2, 3, 3, 57, 11, 1, 17, 1, 3, 2, 10, 0, 2, 9901]
 	]
-	propoerties = ['Hydrophobic', 'Positive', 'Negative', 'Polar', 'Charged', 'Small', 'Tiny', 'Aliphatic', 'Aromatic', 'Proline']
+
+	# 10 binary physical properties taken from
+	# https://link.springer.com/content/pdf/10.1007%2Fs11010-011-1000-5.pdf
+	properties = ['Hydrophobic', 'Positive', 'Negative', 'Polar', 'Charged', 'Small', 'Tiny', 'Aliphatic', 'Aromatic', 'Proline']
 	encoding = {
 		'A': ['1', '0', '0', '0', '0', '1', '1', '0', '0', '0'],
 		'R': ['0', '1', '0', '1', '1', '0', '0', '0', '0', '0'],
