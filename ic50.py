@@ -1,4 +1,4 @@
-class C50:
+class IC50:
 	def getHeader(self):
 		return ["C50"]
 

@@ -1,3 +1,7 @@
+'''
+	Container-Class which holds the data and accumulates all features.
+'''
+
 from misc import Misc
 
 class Data:
@@ -15,12 +19,12 @@ class Data:
 			binder = fields[2]
 			self.csv.append({"aa": aa, "c50": c50, "class": binder})
 
-
+	# Adds a class or an array of classes of feature-extractors, e.g. AminoAcids or IC50 or SparseEncoding
 	def addFeatures(self, feature_classes):
 		self.featureExtractors += feature_classes if isinstance(feature_classes, list) else [feature_classes]
 		return self
 
-
+	# Format data in CSV-style. No data is printed or returned, use puts() or save() instead.
 	def formatCSV(self):
 		ret = ["\t".join(self._getHeader())]
 		for l in self.csv:
@@ -29,19 +33,37 @@ class Data:
 		self.output = "\n".join(ret)
 		return self
 
-
+	# Prints the current output buffer.
 	def puts(self):
+		if(not self.output):
+			print "Unformatted or empty output buffer! Format first using e.g. formatCSV()."
 		print self.output
 		return self
 
-
+	# Saves the current output buffer to file, file is created if not exists, otherwise overwritten
 	def save(self, filepath):
+		if(not self.output):
+			print "Unformatted or empty output buffer! Format first using e.g. formatCSV()."
+			return self
+			
 		f = open(filepath, 'w+')
 		f.write(self.output)
 		f.closed
 		return self
 
 
+
+
+	###       ###       ###
+	### PRIVATE METHODS ###
+	###       ###       ###
+
+
+
+
+	# Accumulates all headers of feature extractors in the order of adding
+	# Appends an 'class' column at the very end
+	# Returns an array of strings
 	def _getHeader(self):
 		header = []
 		for f in self.featureExtractors:
@@ -49,7 +71,9 @@ class Data:
 		header.append('class')
 		return header
 
-
+	# Accumulates all features of given feature-extractors in the order of 
+	# adding for a single data-line (hashmap)
+	# Returns an array of strings
 	def _getDataRow(self, l):
 		row = []
 		for f in self.featureExtractors:
