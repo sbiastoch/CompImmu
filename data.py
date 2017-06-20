@@ -7,7 +7,7 @@ from misc import Misc
 class Data:
 	csv = []
 	featureExtractors = []
-	output = ""
+	output_buffer = ""
 
 	def __init__(self, filepath):
 		f = open(filepath, 'r')
@@ -30,26 +30,34 @@ class Data:
 		for l in self.csv:
 			ret.append("\t".join(self._getDataRow(l)))
 
-		self.output = "\n".join(ret)
+		self.output_buffer = "\n".join(ret)
 		return self
 
 	# Prints the current output buffer.
 	def puts(self):
-		if(not self.output):
+		if(not self.output_buffer):
 			print "Unformatted or empty output buffer! Format first using e.g. formatCSV()."
-		print self.output
+		print self.output_buffer
 		return self
 
 	# Saves the current output buffer to file, file is created if not exists, otherwise overwritten
 	def save(self, filepath):
-		if(not self.output):
+		if(not self.output_buffer):
 			print "Unformatted or empty output buffer! Format first using e.g. formatCSV()."
 			return self
-			
+
 		f = open(filepath, 'w+')
-		f.write(self.output)
+		f.write(self.output_buffer)
 		f.closed
 		return self
+
+	# Formats the output buffer
+	def toArray(self):
+		ret = [self._getHeader()]
+		for l in self.csv:
+			ret.append(self._getDataRow(l))
+
+		return ret
 
 
 

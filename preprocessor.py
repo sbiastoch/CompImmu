@@ -10,8 +10,11 @@ from amino_acids import AminoAcids
 from sparse_encoding import SparseEncoding
 from paths import *
 
-Data(input_file).\
+data = Data(input_file).\
 	addFeatures([IC50, AminoAcids, SparseEncoding]).\
 	formatCSV().\
 	save(output_file).\
-	puts()
+	puts().\
+	toArray()
+
+print data
