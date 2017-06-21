@@ -11,7 +11,7 @@ class SparseEncoding:
 		header = []
 		for aaPosition in range(0, 9):
 			for posibleAA in Misc.aas:
-				header.append("AA%s-"%(aaPosition) + posibleAA)
+				header.append("sparse_AA%s-"%(aaPosition) + posibleAA)
 		return header
 
 	def getFeatures(self, l):

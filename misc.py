@@ -26,6 +26,8 @@ class Misc:
 		[13, 2, 1, 1, 3, 2, 2, 3, 3, 57, 11, 1, 17, 1, 3, 2, 10, 0, 2, 9901]
 	]
 
+
+
 	# 10 binary physical properties taken from
 	# https://link.springer.com/content/pdf/10.1007%2Fs11010-011-1000-5.pdf
 	properties = ['Hydrophobic', 'Positive', 'Negative', 'Polar', 'Charged', 'Small', 'Tiny', 'Aliphatic', 'Aromatic', 'Proline']
@@ -51,3 +53,28 @@ class Misc:
 		'Y': ['1', '0', '0', '1', '0', '0', '0', '0', '1', '0'],
 		'V': ['1', '0', '0', '0', '0', '1', '0', '1', '0', '0']
 	}
+
+	# Taken from https://books.google.de/books?id=JbBsPibqtIsC&pg=PA28
+
+	knowledge_base = {
+		'A': {'sparse': '10000000000000000000',	'char6': '53500a',	'bin9': '100001000',	'volume': 0.1677,	'bulkiness': 0.4433,	'flexibility': 0.2490,	'plarity': 0.3951,	'aromaticity': 0.0,		'charge': 0.5},
+		'C': {'sparse': '01000000000000000000',	'char6': '45500a',	'bin9': '000001001',	'volume': 0.3114,	'bulkiness': 0.5506,	'flexibility': 0.2048,	'plarity': 0.7441,	'aromaticity': 0.0,		'charge': 0.5},
+		'D': {'sparse': '00100000000000000000',	'char6': 'a5001a',	'bin9': '001001000',	'volume': 0.3054,	'bulkiness': 0.4532,	'flexibility': 0.8675,	'plarity': 1.0000,	'aromaticity': 0.0,		'charge': 0.5},
+		'E': {'sparse': '00010000000000000000',	'char6': 'a60010',	'bin9': '001000100',	'volume': 0.4970,	'bulkiness': 0.5567,	'flexibility': 0.8112,	'plarity': 0.9136,	'aromaticity': 0.0,		'charge': 0.5},
+		'F': {'sparse': '00001000000000000000',	'char6': '185a0a',	'bin9': '100100101',	'volume': 0.7725,	'bulkiness': 0.8976,	'flexibility': 0.0763,	'plarity': 0.0370,	'aromaticity': 0.6667,	'charge': 0.5},
+		'G': {'sparse': '00000100000000000000',	'char6': '525000',	'bin9': '000001000',	'volume': 0.0,		'bulkiness': 0.0,		'flexibility': 1.0,		'plarity': 0.5062,	'aromaticity': 0.0,		'charge': 0.5},
+		'H': {'sparse': '00000010000000000000',	'char6': '565010',	'bin9': '010100111',	'volume': 0.5569,	'bulkiness': 0.5632,	'flexibility': 0.1124,	'plarity': 0.6790,	'aromaticity': 0.5556,	'charge': 0.5},
+		'I': {'sparse': '00000001000000000000',	'char6': '37500a',	'bin9': '100010011',	'volume': 0.6467,	'bulkiness': 0.9852,	'flexibility': 0.6707,	'plarity': 0.0370,	'aromaticity': 0.0,		'charge': 0.5},
+		'K': {'sparse': '00000000100000000000',	'char6': 'a7a02a',	'bin9': '010000111',	'volume': 0.6946,	'bulkiness': 0.6738,	'flexibility': 0.6867,	'plarity': 0.7901,	'aromaticity': 0.0,		'charge': 1.0},
+		'L': {'sparse': '00000000010000000000',	'char6': '375000',	'bin9': '100010001',	'volume': 0.6467,	'bulkiness': 0.9852,	'flexibility': 0.2811,	'plarity': 0.0,		'aromaticity': 0.0,		'charge': 0.5},
+		'M': {'sparse': '00000000001000000000',	'char6': '375005',	'bin9': '100000100',	'volume': 0.6108,	'bulkiness': 0.7033,	'flexibility': 0.0,		'plarity': 0.0988,	'aromaticity': 0.0,		'charge': 0.5},
+		'N': {'sparse': '00000000000100000000',	'char6': '655020',	'bin9': '000001000',	'volume': 0.3174,	'bulkiness': 0.5156,	'flexibility': 0.6747,	'plarity': 0.8272,	'aromaticity': 0.0,		'charge': 0.5},
+		'P': {'sparse': '00000000000010000000',	'char6': '555000',	'bin9': '100000010',	'volume': 0.1766,	'bulkiness': 0.7679,	'flexibility': 0.8594,	'plarity': 0.3827,	'aromaticity': 0.0,		'charge': 0.5},
+		'Q': {'sparse': '00000000000001000000',	'char6': '66502a',	'bin9': '000000100',	'volume': 0.4910,	'bulkiness': 0.6048,	'flexibility': 0.7952,	'plarity': 0.6914,	'aromaticity': 0.0,		'charge': 0.5},
+		'R': {'sparse': '00000000000000100000',	'char6': 'a8a046',	'bin9': '010000110',	'volume': 0.7246,	'bulkiness': 0.5955,	'flexibility': 0.9398,	'plarity': 0.6914,	'aromaticity': 0.0,		'charge': 1.0},
+		'S': {'sparse': '00000000000000010000',	'char6': '645010',	'bin9': '000001011',	'volume': 0.1737,	'bulkiness': 0.3222,	'flexibility': 0.8514,	'plarity': 0.5309,	'aromaticity': 0.0,		'charge': 0.5},
+		'T': {'sparse': '00000000000000001000',	'char6': '55501a',	'bin9': '000001010',	'volume': 0.3473,	'bulkiness': 0.6771,	'flexibility': 0.5984,	'plarity': 0.4568,	'aromaticity': 0.0,		'charge': 0.5},
+		'V': {'sparse': '00000000000000000100',	'char6': '365007',	'bin9': '100011010',	'volume': 0.4850,	'bulkiness': 0.9945,	'flexibility': 0.3655,	'plarity': 0.1235,	'aromaticity': 0.0,		'charge': 0.5},
+		'W': {'sparse': '00000000000000000010',	'char6': '0a5a10',	'bin9': '100100110',	'volume': 1.0,		'bulkiness': 1.0,		'flexibility': 0.0402,	'plarity': 0.0617,	'aromaticity': 1.0,		'charge': 0.5},
+		'Y': {'sparse': '00000000000000000001',	'char6': '285a18',	'bin9': '000100111',	'volume': 0.7964,	'bulkiness': 0.8008,	'flexibility': 0.5020,	'plarity': 0.1605,	'aromaticity': 0.6667,	'charge': 0.5}
+		}
