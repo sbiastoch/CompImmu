@@ -3,4 +3,4 @@ class IC50:
 		return ["C50"]
 
 	def getFeatures(self, data_vector):
-		return [data_vector['c50']]
+		return [""+data_vector['c50']]
