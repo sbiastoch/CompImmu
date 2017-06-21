@@ -29,7 +29,7 @@ class Misc:
 	# 10 binary physical properties taken from
 	# https://link.springer.com/content/pdf/10.1007%2Fs11010-011-1000-5.pdf
 	properties = ['Hydrophobic', 'Positive', 'Negative', 'Polar', 'Charged', 'Small', 'Tiny', 'Aliphatic', 'Aromatic', 'Proline']
-	encoding = {
+	physical_properties = {
 		'A': ['1', '0', '0', '0', '0', '1', '1', '0', '0', '0'],
 		'R': ['0', '1', '0', '1', '1', '0', '0', '0', '0', '0'],
 		'N': ['0', '0', '0', '1', '0', '1', '0', '0', '0', '0'],
