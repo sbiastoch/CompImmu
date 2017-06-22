@@ -26,11 +26,18 @@ class Data:
 
 	# Format data in CSV-style. No data is printed or returned, use puts() or save() instead.
 	def formatCSV(self):
-		ret = ["\t".join(self._getHeader())]
+		ret = [",".join(self._getHeader())]
 		for l in self.csv:
-			ret.append("\t".join(self._getDataRow(l)))
+			ret.append(",".join(self._getDataRow(l)))
 
 		self.output_buffer = "\n".join(ret)
+		return self
+
+	def formatTensorflowCSV(self):
+		self.formatCSV()
+		rows = len(self.csv)
+		feature_dims = len(self.csv[0])
+		self.output_buffer = str(rows) + "," + str(feature_dims) + "," + self.output_buffer
 		return self
 
 	# Prints the current output buffer.
