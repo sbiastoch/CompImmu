@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn import datasets
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.gaussian_process.kernels import RBF
+from paths import * # Import paths which may differ from local machine to machine
 
 from Bio.SubsMat import MatrixInfo
 blosum = MatrixInfo.blosum62
@@ -21,7 +22,7 @@ def switch(seq1, consense):
     return switch
 
 
-with open("project_training.txt","r") as lines:
+with open(input_file,"r") as lines:
     content = lines.read().splitlines()
 
 header = content[0].split('\t') + ['Pos_%s'%i for i in range(0,9)]
