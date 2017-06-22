@@ -34,10 +34,15 @@ class Data:
 		return self
 
 	def formatTensorflowCSV(self):
-		self.formatCSV()
+
 		rows = len(self.csv)
-		feature_dims = len(self.csv[0])
-		self.output_buffer = str(rows) + "," + str(feature_dims) + "," + self.output_buffer
+		feature_dims = len(self._getHeader())-1
+		ret = [str(rows) + "," + str(feature_dims) + "," + "binder,non-binder"]
+		for l in self.csv:
+			ret.append(",".join(self._getDataRow(l)))
+
+		self.output_buffer = "\n".join(ret)+"\n"
+
 		return self
 
 	# Prints the current output buffer.
