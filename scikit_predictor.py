@@ -19,9 +19,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import urllib
-
 from sklearn import svm, datasets
 from sklearn.model_selection import GridSearchCV
+from sklearn.externals import joblib
+
 class ScikitPredictor:
     
     classifier = None
@@ -33,10 +34,6 @@ class ScikitPredictor:
     # Data used for Training the model
     trainX = None
     trainY = None
-    
-    # Data used for model selection (hyper-parameter tuning)
-    validationX = None
-    validationy = None
 
     # Never seen before data! Used only for final testing, after (!) model tuning to report final performance measures
     testX = None
@@ -54,14 +51,11 @@ class ScikitPredictor:
 
     # Example: splitData(0.2, 0.2) takes away 20% of the Data for testing
     #          and uses 20% of the remaining data for model selection
-    def splitData(self, testSplitRatio, trainValidationRatio):
-        remainingX, self.testX, remainingY, self.testY = \
+    def splitData(self, testSplitRatio):
+        self.trainX, self.testX, self.trainY, self.testY = \
             train_test_split(self.X, self.y, test_size=testSplitRatio, stratify=self.y)
-
-        self.trainX, self.validationX, self.trainY, self.validationY = \
-            train_test_split(remainingX, remainingY, test_size=trainValidationRatio, stratify=remainingY)
         
-        print("Predictor: Using "+str(len(self.trainX))+" samples for training, "+str(len(self.validationX))+" for validation and "+str(len(self.testX))+" for final testing.")
+        print("Predictor: Using "+str(len(self.trainX))+" samples for training and "+str(len(self.testX))+" for testing.")
         
         return self
 
@@ -73,7 +67,7 @@ class ScikitPredictor:
     # Performances cross validation with numFolds-folds on validation-data. Use this method as metric for parameter tuning.
     def crossValidate(self, numFolds):
         cv = StratifiedKFold(n_splits=numFolds, shuffle=True)
-        scores = cross_val_score(self.classifier, self.validationX, self.validationY, cv=cv)
+        scores = cross_val_score(self.classifier, self.trainX, self.trainY, cv=cv)
 
         # mean score and the 95% confidence interval 
         print("Avg Accuracy by "+str(numFolds)+"-Fold-CF: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
@@ -144,14 +138,23 @@ class ScikitPredictor:
 
     def optimize(self):
         parameters = {
-            #'solver':             ['lbfgs', 'sgd', 'adam'],
-            'momentum':           [1, 0.5,  0.1,  0.05,   0.01,   0.001],
+             'solver':             ['lbfgs', 'sgd', 'adam'],
+         #   'momentum':           [1, 0.5,  0.1,  0.05,   0.01],
            # 'learning_rate_init': [1, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001],
-            'hidden_layer_sizes': [(10), (50), (200), (3, 10, 3), (10, 20, 10), (20, 100, 50)],
+          #  'hidden_layer_sizes': [(10), (25), (100), (30, 10), (5, 20, 5), (10, 20, 10), (20, 100, 50)],
+            'hidden_layer_sizes': [(1), (5), (10), (15), (20), (30)],
             #'activation' :        ['identity', 'logistic', 'tanh', 'relu']
         }
-        cv = StratifiedKFold(n_splits=3, shuffle=True)
+        cv = StratifiedKFold(n_splits=4, shuffle=True)
         clf = GridSearchCV(self.classifier, parameters, n_jobs = 4, cv = cv, verbose = True)
-        clf.fit(self.validationX, self.validationY)
+        clf.fit(self.trainX, self.trainY)
         print("Best model has a score (acc) of "+str(clf.best_score_)+" with hyperparameters:\n\t"+str(clf.best_params_))
         return clf.best_estimator_
+
+    def saveTrainedClassifier(self, path):
+        joblib.dump(self.classifier, path)
+        return self
+
+    def loadTrainedClassifier(self, path):
+        self.classifier = joblib.load(path)
+        return self

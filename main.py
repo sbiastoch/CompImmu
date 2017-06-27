@@ -24,6 +24,7 @@ from sparse_encoding import SparseEncoding
 from tensorflow_predictor import TensorflowPredictor
 import numpy as np
 import tensorflow as tf
+from sklearn.externals import joblib
 
 
 
@@ -38,10 +39,10 @@ data_model = Data(input_file).addFeatures([
 	])
 # Save generated Features to a variable or to a file
 data_model.formatCSV().save(output_file)
-#data = data_model.toArray()
+data = data_model.toArray()
 
 # Give all the Data to the predictor and specify the training/validation/test ratios
-pred = ScikitPredictor().setData(output_file).splitData(0.2, 0.2)
+pred = ScikitPredictor().setData(output_file).splitData(0.33)
 
 # Build a classifier
 base_classifier = MLPClassifier(max_iter=1000)
@@ -63,3 +64,10 @@ pred.evaluateOnTestData()
 
 # Print ROC-curve
 pred.plot_roc()
+
+# Save trained classifier 
+pred.saveTrainedClassifier('/home/sbiastoch/Desktop/classifier.pkl')
+
+# Example how a loaded classifier can used to predict samples
+loaded_pred = ScikitPredictor().loadTrainedClassifier('/home/sbiastoch/Desktop/classifier.pkl')
+print loaded_pred.classify([[int(x) for x in data[1][:-1]]])
