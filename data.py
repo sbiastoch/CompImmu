@@ -87,7 +87,7 @@ class Data:
 	def _getHeader(self):
 		header = []
 		for f in self.featureExtractors:
-			header += f().getHeader()
+			header += f.getHeader()
 		header.append('class')
 		return header
 
@@ -97,7 +97,7 @@ class Data:
 	def _getDataRow(self, l):
 		row = []
 		for f in self.featureExtractors:
-			row += f().getFeatures(l)
+			row += f.getFeatures(l)
 		row += [l['class']]
 
 		return row
