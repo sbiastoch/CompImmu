@@ -26,17 +26,17 @@ import numpy as np
 import tensorflow as tf
 from sklearn.externals import joblib
 
-
-
-
-# Create a Data Model with various features
-data_model = Data(input_file).addFeatures([
+features = [
 	#PhysNumeric(),
 	#Bin9(),
 	Char6(),
 	#SparseEncoding(),
 	#PhysProperties()
-	])
+	]
+
+
+# Create a Data Model with various features
+data_model = Data().loadFromFile(input_file).addFeatures(features)
 # Save generated Features to a variable or to a file
 data_model.formatCSV().save(output_file)
 data = data_model.toArray()
@@ -68,6 +68,25 @@ pred.plot_roc()
 # Save trained classifier 
 pred.saveTrainedClassifier('/home/sbiastoch/Desktop/classifier.pkl')
 
-# Example how a loaded classifier can used to predict samples
+
+
+
+
+'''
+*** Example how a loaded classifier can used to predict sample peptides
+'''
+
+# Load previously trained classifier from disk 
 loaded_pred = ScikitPredictor().loadTrainedClassifier('/home/sbiastoch/Desktop/classifier.pkl')
-print loaded_pred.classify([[int(x) for x in data[1][:-1]]])
+
+# Get the peptide sequence
+peptids = ["LQKVPHTRY", "LAKVPHTRY", "AAAAAAAAA"]
+
+# Populate Data-Object with peptides and add same Feature extractors as used when training the classifier
+d = Data().loadFromArray(peptids).addFeatures(features)
+
+# Get Features of peptides as arrays 
+peptid_features = d.toFeatureArray()
+
+# Classify the peptid represented by its features
+print zip(peptids, loaded_pred.classify(peptid_features))

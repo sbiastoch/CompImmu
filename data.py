@@ -9,7 +9,7 @@ class Data:
 	featureExtractors = []
 	output_buffer = ""
 
-	def __init__(self, filepath):
+	def loadFromFile(self, filepath):
 		f = open(filepath, 'r')
 		f.readline() # Skip first line with headers
 		for line in f:
@@ -18,6 +18,11 @@ class Data:
 			c50 = fields[1]
 			binder = fields[2]
 			self.csv.append({"aa": aa, "c50": c50, "class": binder})
+		return self
+
+	def loadFromArray(self, peptides):
+		self.csv = [{'aa': aa} for aa in peptides]
+		return self
 
 	# Adds a class or an array of classes of feature-extractors, e.g. AminoAcids or IC50 or SparseEncoding
 	def addFeatures(self, feature_classes):
@@ -70,6 +75,15 @@ class Data:
 			ret.append(self._getDataRow(l))
 
 		return ret
+
+	# Only feature extractors returning numeric values are allowed here
+	def toFeatureArray(self):
+		row = []
+		for l in self.csv:
+			for f in self.featureExtractors:
+				row.append([int(x) for x in f.getFeatures(l)])
+
+		return row
 
 
 
