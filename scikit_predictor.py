@@ -20,6 +20,8 @@ import numpy as np
 import os
 import urllib
 
+from sklearn import svm, datasets
+from sklearn.model_selection import GridSearchCV
 class ScikitPredictor:
     
     classifier = None
@@ -139,3 +141,17 @@ class ScikitPredictor:
         plt.title('Receiver operating characteristic')
         plt.legend(loc="lower right")
         plt.show()
+
+    def optimize(self):
+        parameters = {
+            #'solver':             ['lbfgs', 'sgd', 'adam'],
+            'momentum':           [1, 0.5,  0.1,  0.05,   0.01,   0.001],
+           # 'learning_rate_init': [1, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001],
+            'hidden_layer_sizes': [(10), (50), (200), (3, 10, 3), (10, 20, 10), (20, 100, 50)],
+            #'activation' :        ['identity', 'logistic', 'tanh', 'relu']
+        }
+        cv = StratifiedKFold(n_splits=3, shuffle=True)
+        clf = GridSearchCV(self.classifier, parameters, n_jobs = 4, cv = cv, verbose = True)
+        clf.fit(self.validationX, self.validationY)
+        print("Best model has a score (acc) of "+str(clf.best_score_)+" with hyperparameters:\n\t"+str(clf.best_params_))
+        return clf.best_estimator_

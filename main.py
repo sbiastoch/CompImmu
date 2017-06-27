@@ -44,18 +44,19 @@ data_model.formatCSV().save(output_file)
 pred = ScikitPredictor().setData(output_file).splitData(0.2, 0.2)
 
 # Build a classifier
-classifier = MLPClassifier(solver='sgd', max_iter=2000,
-										 learning_rate_init = 0.001,
-                                         hidden_layer_sizes=(10, 20, 10))
+base_classifier = MLPClassifier(max_iter=1000)
 
 # Give the classifier to the predictor
-pred.setClassifier(classifier)
+pred.setClassifier(base_classifier)
+
+best_classifier = pred.optimize()
+pred.setClassifier(best_classifier)
 
 # Example Cross-Validation run on a 5-Fold split. Crossvalidation is performed on the validation-dataset
-pred.crossValidate(5)
+# pred.crossValidate(5)
 
 # Train the classifier on training-dataset for n iterations
-pred.train(2000)
+pred.train(5000)
 
 # Do the final evaluation on the previously unseen test-data
 pred.evaluateOnTestData()
