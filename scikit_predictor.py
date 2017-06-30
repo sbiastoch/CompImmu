@@ -1,28 +1,15 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from itertools import cycle
-from paths import *
-from scipy import interp
-from sklearn import datasets
-from sklearn import linear_model
-from sklearn import metrics
-from sklearn import svm, datasets
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import roc_curve, auc
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_val_predict
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import StratifiedKFold
+from paths import * # Import local paths for in- and output files
+
+# Imports from scikit
 from sklearn.neural_network import MLPClassifier
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-import urllib
-from sklearn import svm, datasets
-from sklearn.model_selection import GridSearchCV
-from sklearn.externals import joblib
-from collections import OrderedDict
+from sklearn.model_selection import train_test_split, cross_val_predict, cross_val_score, StratifiedKFold, GridSearchCV
+from sklearn import metrics
+
+import matplotlib.pyplot as plt # For plotting
+import numpy as np # for convinient csv-loading
+from sklearn.externals import joblib # For loading and storing to disk
+
+
 class ScikitPredictor:
     
     classifier = None
@@ -82,7 +69,7 @@ class ScikitPredictor:
 
     # Classifies an array of samples with the previously trained classifier
     def classify(self, samples):
-        return(self.classifier.predict(samples))
+        return self.classifier.predict(samples)
 
     # Evaluate previously trained model on unseen test-data. Prints various metrics.
     def evaluateOnTestData(self):
@@ -103,15 +90,15 @@ class ScikitPredictor:
                 acc += self.accuracy(yt, yp)
             return acc/len(y_true)
         else:
-            return accuracy_score(y_true, y_pred)
+            return metrics.accuracy_score(y_true, y_pred)
 
     # Gives the AUC for unseen test-data
     def auc(self):
         probas = self.classifier.predict_proba(self.testX)
 
         # Compute ROC curve and area the curve
-        fpr, tpr, thresholds = roc_curve(self.testY, probas[:, 1])
-        return auc(fpr, tpr)
+        fpr, tpr, thresholds = metrics.roc_curve(self.testY, probas[:, 1])
+        return metrics.auc(fpr, tpr)
 
     # Plots the ROC-Curve over the test data
     
@@ -119,7 +106,7 @@ class ScikitPredictor:
         probas = self.classifier.predict_proba(self.testX)
 
         # Compute ROC curve and area the curve
-        fpr, tpr, thresholds = roc_curve(self.testY, probas[:, 1])
+        fpr, tpr, thresholds = metrics.roc_curve(self.testY, probas[:, 1])
         roc_auc = auc(fpr, tpr)
     
 
@@ -164,4 +151,5 @@ class ScikitPredictor:
     def loadTrainedClassifier(self, path):
         loaded = joblib.load(path)
         self.classifier = loaded['model']
+        print(self.classifier)
         return loaded['features']

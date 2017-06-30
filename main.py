@@ -1,13 +1,8 @@
-'''
-	Main File of the Preprocessor
-'''
-
 # Add project folders to search path
-
-# Include modules
-
 import sys
 sys.path.append('./feature_extractors')
+
+# Import of project files
 from amino_acids import AminoAcids
 from bin9 import Bin9
 from blo_dist import BloDist
@@ -19,12 +14,10 @@ from paths import *
 from phys_numeric import PhysNumeric
 from phys_properties import PhysProperties
 from scikit_predictor import ScikitPredictor
-from sklearn.neural_network import MLPClassifier
 from sparse_encoding import SparseEncoding
-from tensorflow_predictor import TensorflowPredictor
-import numpy as np
-import tensorflow as tf
-from sklearn.externals import joblib
+
+# Import of libraries
+from sklearn.neural_network import MLPClassifier
 
 features = [
 	PhysNumeric(),
@@ -51,7 +44,7 @@ for feature in features:
 	pred = ScikitPredictor().setData(output_file).splitData(0.33)
 
 	# Build a classifier
-	base_classifier = MLPClassifier(max_iter=1000)
+	base_classifier = MLPClassifier(max_iter=10)
 
 	# Give the classifier to the predictor
 	pred.setClassifier(base_classifier)
@@ -60,7 +53,7 @@ for feature in features:
 	pred.setClassifier(best_classifier)
 
 	# Train the classifier on training-dataset for n iterations
-	pred.train(1000)
+	pred.train(10)
 
 	# Do the final evaluation on the previously unseen test-data
 	pred.evaluateOnTestData()
@@ -70,9 +63,9 @@ for feature in features:
 	all_params = pred.classifier.get_params()
 	selected_params = ['learning_rate_init', 'momentum', 'solver', 'hidden_layer_sizes', 'activation']
    	params = {k + "_" + str(all_params[k]) for k in selected_params} 
-	filename = 'featureset_'+feature_name+'__' + "-".join(params)
+	filename = feature_name+'__' + "-".join(params)
 	pred.saveTrainedClassifier(feature, 'trained_classifiers/'+filename+'.pkl')
-
+	break
 	# Print ROC-curve
 	pred.plot_roc(feature_name, filename)
 
@@ -83,7 +76,7 @@ for feature in features:
 '''
 *** Example how a loaded classifier can used to predict sample peptides
 '''
-'''
+
 # Load previously trained classifier from disk 
 loaded_pred = ScikitPredictor()
 feature_extractor = loaded_pred.loadTrainedClassifier('trained_classifiers/'+filename+'.pkl')
@@ -99,4 +92,3 @@ peptid_features = d.toFeatureArray()
 
 # Classify the peptid represented by its features
 print zip(peptids, loaded_pred.classify(peptid_features))
-'''

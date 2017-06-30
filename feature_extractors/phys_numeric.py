@@ -1,9 +1,3 @@
-'''
-	Creates an sparse enconding for each amino acid, consisting of
-	20 features per amino acid at position i. Thus, for a peptide 
-	sequence of length 9, a total of 180 features are generated.
-'''
-
 from misc import Misc
 
 class PhysNumeric:

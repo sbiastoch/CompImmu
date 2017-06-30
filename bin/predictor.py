@@ -20,22 +20,26 @@ if __name__ == "__main__":
   parser.add_argument('output', metavar='out-file')
   args = parser.parse_args()
 
+  # Load previously trained classifier from disk 
+  pred = ScikitPredictor()
+  features = pred.loadTrainedClassifier('best_classifier.pkl')
+  d = Data().setFeatures(features)
+  
+  print("Using '"+features.__class__.__name__+"' featureset.")
+
   with open(args.output, "w") as o:
     with open(args.input, "r") as i:
       for e in i:
         peptide = e.strip()
-
-        # Load previously trained classifier from disk 
-        pred = ScikitPredictor()
-        features = pred.loadTrainedClassifier('best_classifier.pkl')
-
+      
         # Populate Data-Object with peptides and add same Feature extractors as used when training the classifier
-        d = Data().loadFromArray([peptide]).setFeatures(features)
+        d.loadFromArray([peptide])
 
         # Get Features of peptides as arrays 
         peptid_features = d.toFeatureArray()
+        print("Got "+str(len(peptid_features))+" samples with "+str(len(peptid_features[0]))+" features.")
 
         is_binder = pred.classify(peptid_features)
-
+      
         o.write("%s\t%i\n"%(peptide,is_binder))
 

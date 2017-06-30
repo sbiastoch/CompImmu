@@ -1,10 +1,10 @@
-# Setup the environment
-Create a file `paths.py` in the root folder of the repo with the following contents:
+# Install libraries
+Install required libraries for `scikit-learn`:
 ```
-input_file  = "data/project_training.csv"
-output_file = "<path to your *.csv-file>"
+pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose
 ```
 
-# Install libraries
-Install tensorflow with `pip install tensorflow` (or alternatively, if you have a mighty Nvidea-GPU: `pip install tensorflow-gpu`)
-Install tflearn with `pip install tflearn`
+Install `scikit-learn`:
+```
+pip install -U scikit-learn
+```
