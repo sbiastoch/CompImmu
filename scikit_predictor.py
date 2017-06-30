@@ -157,10 +157,11 @@ class ScikitPredictor:
         print("Best model has a score (acc) of "+str(clf.best_score_)+" with hyperparameters:\n\t"+str(clf.best_params_))
         return clf.best_estimator_
 
-    def saveTrainedClassifier(self, path):
-        joblib.dump(self.classifier, path)
+    def saveTrainedClassifier(self, feature_extractor, path):
+        joblib.dump({'features': feature_extractor, 'model': self.classifier}, path)
         return self
 
     def loadTrainedClassifier(self, path):
-        self.classifier = joblib.load(path)
-        return self
+        loaded = joblib.load(path)
+        self.classifier = loaded['model']
+        return loaded['features']

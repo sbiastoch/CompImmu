@@ -71,7 +71,7 @@ for feature in features:
 	selected_params = ['learning_rate_init', 'momentum', 'solver', 'hidden_layer_sizes', 'activation']
    	params = {k + "_" + str(all_params[k]) for k in selected_params} 
 	filename = 'featureset_'+feature_name+'__' + "-".join(params)
-	pred.saveTrainedClassifier('trained_classifiers/'+filename+'.pkl')
+	pred.saveTrainedClassifier(feature, 'trained_classifiers/'+filename+'.pkl')
 
 	# Print ROC-curve
 	pred.plot_roc(feature_name, filename)
@@ -85,13 +85,14 @@ for feature in features:
 '''
 '''
 # Load previously trained classifier from disk 
-loaded_pred = ScikitPredictor().loadTrainedClassifier('/home/sbiastoch/Desktop/classifier.pkl')
+loaded_pred = ScikitPredictor()
+feature_extractor = loaded_pred.loadTrainedClassifier('trained_classifiers/'+filename+'.pkl')
 
 # Get the peptide sequence
 peptids = ["LQKVPHTRY", "LAKVPHTRY", "AAAAAAAAA"]
 
 # Populate Data-Object with peptides and add same Feature extractors as used when training the classifier
-d = Data().loadFromArray(peptids).addFeatures(features)
+d = Data().loadFromArray(peptids).setFeatures(feature_extractor)
 
 # Get Features of peptides as arrays 
 peptid_features = d.toFeatureArray()

@@ -81,7 +81,7 @@ class Data:
 		row = []
 		for l in self.csv:
 			for f in self.featureExtractors:
-				row.append([int(x) for x in f.getFeatures(l)])
+				row.append([float(x) for x in f.getFeatures(l)])
 
 		return row
 
