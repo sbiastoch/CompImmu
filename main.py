@@ -10,7 +10,7 @@ import sys
 sys.path.append('./feature_extractors')
 from amino_acids import AminoAcids
 from bin9 import Bin9
-from blo_dis import BloDis
+from blo_dist import BloDist
 from char6 import Char6
 from data import Data
 from ic50 import IC50
@@ -31,7 +31,8 @@ features = [
 	Bin9(),
 	Char6(),
 	SparseEncoding(),
-	PhysProperties()
+	PhysProperties(),
+	BloDist('AQIDNYNKF')
 ]
 
 data_model = Data().loadFromFile(input_file)
