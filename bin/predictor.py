@@ -37,7 +37,6 @@ if __name__ == "__main__":
 
         # Get Features of peptides as arrays 
         peptid_features = d.toFeatureArray()
-        print("Got "+str(len(peptid_features))+" samples with "+str(len(peptid_features[0]))+" features.")
 
         is_binder = pred.classify(peptid_features)
       
