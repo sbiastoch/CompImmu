@@ -78,12 +78,12 @@ class Data:
 
 	# Only feature extractors returning numeric values are allowed here
 	def toFeatureArray(self):
-		row = []
+		rows = []
 		for l in self.csv:
 			for f in self.featureExtractors:
-				row.append([float(x) for x in f.getFeatures(l)])
+				rows.append([float(x) for x in f.getFeatures(l)])
 
-		return row
+		return rows
 
 
 

@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt # For plotting
 import numpy as np # for convinient csv-loading
 from sklearn.externals import joblib # For loading and storing to disk
 
+from collections import OrderedDict
 
 class ScikitPredictor:
     
@@ -107,7 +108,7 @@ class ScikitPredictor:
 
         # Compute ROC curve and area the curve
         fpr, tpr, thresholds = metrics.roc_curve(self.testY, probas[:, 1])
-        roc_auc = auc(fpr, tpr)
+        roc_auc = metrics.auc(fpr, tpr)
     
 
         plt.plot(fpr, tpr, lw=2, color='blue',

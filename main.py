@@ -35,7 +35,7 @@ for feature in features:
 	feature_name = feature.__class__.__name__
 
 	# Create a Data Model with various features
-	data_model.setFeatures(features)
+	data_model.setFeatures([feature])
 
 	# Save generated Features to a variable or to a file
 	data_model.formatCSV().save(output_file)
@@ -44,7 +44,7 @@ for feature in features:
 	pred = ScikitPredictor().setData(output_file).splitData(0.33)
 
 	# Build a classifier
-	base_classifier = MLPClassifier(max_iter=10)
+	base_classifier = MLPClassifier(max_iter=500)
 
 	# Give the classifier to the predictor
 	pred.setClassifier(base_classifier)
@@ -53,7 +53,7 @@ for feature in features:
 	pred.setClassifier(best_classifier)
 
 	# Train the classifier on training-dataset for n iterations
-	pred.train(10)
+	pred.train(5000)
 
 	# Do the final evaluation on the previously unseen test-data
 	pred.evaluateOnTestData()
@@ -65,10 +65,9 @@ for feature in features:
    	params = {k + "_" + str(all_params[k]) for k in selected_params} 
 	filename = feature_name+'__' + "-".join(params)
 	pred.saveTrainedClassifier(feature, 'trained_classifiers/'+filename+'.pkl')
-	break
+	
 	# Print ROC-curve
 	pred.plot_roc(feature_name, filename)
-
 
 
 
@@ -76,7 +75,7 @@ for feature in features:
 '''
 *** Example how a loaded classifier can used to predict sample peptides
 '''
-
+'''
 # Load previously trained classifier from disk 
 loaded_pred = ScikitPredictor()
 feature_extractor = loaded_pred.loadTrainedClassifier('trained_classifiers/'+filename+'.pkl')
@@ -91,4 +90,5 @@ d = Data().loadFromArray(peptids).setFeatures(feature_extractor)
 peptid_features = d.toFeatureArray()
 
 # Classify the peptid represented by its features
-print zip(peptids, loaded_pred.classify(peptid_features))
+print zip(peptids, pred.classify(peptid_features))
+'''
