@@ -1,7 +1,8 @@
 # Install libraries
-Install required libraries for `scikit-learn`:
+
+Install required libraries:
 ```
-pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose
+pip install --user numpy scipy matplotlib ipython jupyter pandas sympy nose biopython
 ```
 
 Install `scikit-learn`:
