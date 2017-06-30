@@ -27,46 +27,53 @@ import tensorflow as tf
 from sklearn.externals import joblib
 
 features = [
-	#PhysNumeric(),
-	#Bin9(),
+	PhysNumeric(),
+	Bin9(),
 	Char6(),
-	#SparseEncoding(),
-	#PhysProperties()
-	]
+	SparseEncoding(),
+	PhysProperties()
+]
 
+data_model = Data().loadFromFile(input_file)
 
-# Create a Data Model with various features
-data_model = Data().loadFromFile(input_file).addFeatures(features)
-# Save generated Features to a variable or to a file
-data_model.formatCSV().save(output_file)
-data = data_model.toArray()
+for feature in features:
 
-# Give all the Data to the predictor and specify the training/validation/test ratios
-pred = ScikitPredictor().setData(output_file).splitData(0.33)
+	feature_name = feature.__class__.__name__
 
-# Build a classifier
-base_classifier = MLPClassifier(max_iter=1000)
+	# Create a Data Model with various features
+	data_model.setFeatures(features)
 
-# Give the classifier to the predictor
-pred.setClassifier(base_classifier)
+	# Save generated Features to a variable or to a file
+	data_model.formatCSV().save(output_file)
 
-best_classifier = pred.optimize()
-pred.setClassifier(best_classifier)
+	# Give all the Data to the predictor and specify the training/validation/test ratios
+	pred = ScikitPredictor().setData(output_file).splitData(0.33)
 
-# Example Cross-Validation run on a 5-Fold split. Crossvalidation is performed on the validation-dataset
-# pred.crossValidate(5)
+	# Build a classifier
+	base_classifier = MLPClassifier(max_iter=1000)
 
-# Train the classifier on training-dataset for n iterations
-pred.train(5000)
+	# Give the classifier to the predictor
+	pred.setClassifier(base_classifier)
 
-# Do the final evaluation on the previously unseen test-data
-pred.evaluateOnTestData()
+	best_classifier = pred.optimize()
+	pred.setClassifier(best_classifier)
 
-# Print ROC-curve
-pred.plot_roc()
+	# Train the classifier on training-dataset for n iterations
+	pred.train(1000)
 
-# Save trained classifier 
-pred.saveTrainedClassifier('/home/sbiastoch/Desktop/classifier.pkl')
+	# Do the final evaluation on the previously unseen test-data
+	pred.evaluateOnTestData()
+
+	# Save trained classifier 
+
+	all_params = pred.classifier.get_params()
+	selected_params = ['learning_rate_init', 'momentum', 'solver', 'hidden_layer_sizes', 'activation']
+   	params = {k + "_" + str(all_params[k]) for k in selected_params} 
+	filename = 'featureset_'+feature_name+'__' + "-".join(params)
+	pred.saveTrainedClassifier('trained_classifiers/'+filename+'.pkl')
+
+	# Print ROC-curve
+	pred.plot_roc(feature_name, filename)
 
 
 
@@ -75,7 +82,7 @@ pred.saveTrainedClassifier('/home/sbiastoch/Desktop/classifier.pkl')
 '''
 *** Example how a loaded classifier can used to predict sample peptides
 '''
-
+'''
 # Load previously trained classifier from disk 
 loaded_pred = ScikitPredictor().loadTrainedClassifier('/home/sbiastoch/Desktop/classifier.pkl')
 
@@ -90,3 +97,4 @@ peptid_features = d.toFeatureArray()
 
 # Classify the peptid represented by its features
 print zip(peptids, loaded_pred.classify(peptid_features))
+'''

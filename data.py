@@ -25,8 +25,8 @@ class Data:
 		return self
 
 	# Adds a class or an array of classes of feature-extractors, e.g. AminoAcids or IC50 or SparseEncoding
-	def addFeatures(self, feature_classes):
-		self.featureExtractors += feature_classes if isinstance(feature_classes, list) else [feature_classes]
+	def setFeatures(self, feature_classes):
+		self.featureExtractors = feature_classes if isinstance(feature_classes, list) else [feature_classes]
 		return self
 
 	# Format data in CSV-style. No data is printed or returned, use puts() or save() instead.

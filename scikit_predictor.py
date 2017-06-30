@@ -22,7 +22,7 @@ import urllib
 from sklearn import svm, datasets
 from sklearn.model_selection import GridSearchCV
 from sklearn.externals import joblib
-
+from collections import OrderedDict
 class ScikitPredictor:
     
     classifier = None
@@ -114,7 +114,8 @@ class ScikitPredictor:
         return auc(fpr, tpr)
 
     # Plots the ROC-Curve over the test data
-    def plot_roc(self):
+    
+    def plot_roc(self, features, filename):
         probas = self.classifier.predict_proba(self.testX)
 
         # Compute ROC curve and area the curve
@@ -127,22 +128,27 @@ class ScikitPredictor:
 
         plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='k',
                  label='Luck')
-
+        all_params = self.classifier.get_params()
+        all_params = OrderedDict(sorted(all_params.items(), key=lambda t: t[0]))
+        selected_params = ['learning_rate_init', 'momentum', 'solver', 'hidden_layer_sizes', 'activation']
+        params = {k + ": " + str(all_params[k]) for k in selected_params} 
+        plt.text(0, -0.51, str("\n".join(params)))
         plt.xlim([-0.05, 1.05])
         plt.ylim([-0.05, 1.05])
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
-        plt.title('Receiver operating characteristic')
+        plt.title('ROC-Curve (Featureset '+ features +')')
         plt.legend(loc="lower right")
-        plt.show()
+        plt.gca().set_position((.1, .3, .8, .6))
+        plt.savefig('rocs/'+filename + '.png')
+        plt.close()
 
     def optimize(self):
         parameters = {
-             'solver':             ['lbfgs', 'sgd', 'adam'],
-         #   'momentum':           [1, 0.5,  0.1,  0.05,   0.01],
-           # 'learning_rate_init': [1, 0.1, 0.01, 0.001, 0.0001, 0.00001, 0.000001],
-          #  'hidden_layer_sizes': [(10), (25), (100), (30, 10), (5, 20, 5), (10, 20, 10), (20, 100, 50)],
-            'hidden_layer_sizes': [(1), (5), (10), (15), (20), (30)],
+           # 'solver':             ['lbfgs', 'sgd', 'adam'],
+            #'momentum':           [1, 0.5,  0.1],
+           # 'learning_rate_init': [1, 0.5, 0.01],
+            'hidden_layer_sizes': [(10), (25), (100), (30, 10), (5, 20, 5), (10, 20, 10), (20, 100, 50)],
             #'activation' :        ['identity', 'logistic', 'tanh', 'relu']
         }
         cv = StratifiedKFold(n_splits=4, shuffle=True)
