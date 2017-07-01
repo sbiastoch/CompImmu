@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
   # Load previously trained classifier from disk 
   pred = ScikitPredictor()
-  features = pred.loadTrainedClassifier('best_classifier.pkl')
+  features = pred.loadTrainedClassifier('featureset_PhysProperties__solver_sgd-hidden_layer_sizes_(30, 10)-learning_rate_init_0.01-momentum_0.1-activation_tanh.pkl')
   d = Data().setFeatures(features)
   
   print("Using '"+features.__class__.__name__+"' featureset.")
